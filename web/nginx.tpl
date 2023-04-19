@@ -22,7 +22,6 @@ http {
     location / {
       root   /usr/share/nginx/html;
       index  index.html index.htm;
-      allow all;
     }
 
     proxy_set_header Host $host;

@@ -1,7 +1,7 @@
 version: '3'
 services:
   selenium_chrome:
-    image: selenium/node-chrome:4.8.3
+    image: selenium/node-chrome:3.141.59-vanadium
     container_name: dockerkvs_selenium_chrome
     depends_on:
       - selenium_hub
@@ -9,7 +9,7 @@ services:
       - HUB_HOST=selenium_hub
       - HUB_PORT=4444
   selenium_hub:
-    image: selenium/hub:4.8.3
+    image: selenium/hub:3.141.59-vanadium
     container_name: dockerkvs_selenium_hub
     ports:
       - 4444:4444
@@ -71,7 +71,7 @@ services:
       REDIS_PORT: 6379
       REDIS_DB: 0
   db:
-    image: redis:7.0.10-alpine3.17
+    image: redis:5.0.6-alpine3.10
     restart: "no"
     container_name: dockerkvs_db
     volumes:

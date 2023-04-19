@@ -21,7 +21,7 @@ services:
       REDIS_PORT: 6379
       REDIS_DB: 0
   db:
-    image: redis:7.0.10-alpine3.17
+    image: redis:5.0.6-alpine3.10
     container_name: dockerkvs_db
     restart: unless-stopped
     volumes:
