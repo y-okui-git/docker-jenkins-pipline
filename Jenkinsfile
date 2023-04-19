@@ -16,7 +16,7 @@ pipeline {
     stage('Build') {
       steps {
         sh "cat docker-compose.build.yml"
-        sh "docker compose -f ssh://${BUILD_HOST} docker-compose.build.yml down"
+        sh "docker compose port ssh://${BUILD_HOST} -f docker-compose.build.yml down"
         sh "docker ssh://${BUILD_HOST} volume prune -f"
         sh "docker compose ssh://${BUILD_HOST} -f docker-compose.build.yml build"
         sh "docker compose ssh://${BUILD_HOST} -f docker-compose.build.yml up -d"
