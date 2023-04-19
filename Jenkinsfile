@@ -18,11 +18,11 @@ pipeline {
     stage('Build') {
       steps {
         sh "cat docker-compose.build.yml"
-        sh "docker compose -f ssh://${BUILD_HOST} -f docker-compose.build.yml down"
-        sh "docker -f ssh://${BUILD_HOST} volume prune -f"
-        sh "docker compose -f ssh://${BUILD_HOST} -f docker-compose.build.yml build"
-        sh "docker compose -f ssh://${BUILD_HOST} -f docker-compose.build.yml up -d"
-        sh "docker compose -f ssh://${BUILD_HOST} -f docker-compose.build.yml ps"
+        sh "docker compose -f ssh://${BUILD_HOST} docker-compose.build.yml down"
+        sh "docker -f ssh://${BUILD_HOST} volume prune"
+        sh "docker compose -f ssh://${BUILD_HOST} docker-compose.build.yml build"
+        sh "docker compose -f ssh://${BUILD_HOST} docker-compose.build.yml up -d"
+        sh "docker compose -f ssh://${BUILD_HOST} docker-compose.build.yml ps"
       }
     }
     stage('Test') {
@@ -30,7 +30,7 @@ pipeline {
         sh "docker -f ssh://${BUILD_HOST} container exec dockerkvs_apptest pytest -v test_app.py"
         sh "docker -f ssh://${BUILD_HOST} container exec dockerkvs_webtest pytest -v test_static.py"
         sh "docker -f ssh://${BUILD_HOST} container exec dockerkvs_webtest pytest -v test_selenium.py"
-        sh "docker compose -f ssh://${BUILD_HOST} -f docker-compose.build.yml down"
+        sh "docker compose ssh://${BUILD_HOST} -f docker-compose.build.yml down"
       }
     }
     stage('Register') {
@@ -47,8 +47,8 @@ pipeline {
         sh "echo 'DOCKERHUB_USER=${DOCKERHUB_USER}' > .env"
         sh "echo 'BUILD_TIMESTAMP=${BUILD_TIMESTAMP}' >> .env"
         sh "cat .env"
-        sh "docker compose -f ssh://${PROD_HOST} -f docker-compose.prod.yml up -d"
-        sh "docker compose -f ssh://${PROD_HOST} -f docker-compose.prod.yml ps"
+        sh "docker compose ssh://${PROD_HOST} -f docker-compose.prod.yml up -d"
+        sh "docker compose ssh://${PROD_HOST} -f docker-compose.prod.yml ps"
       }
     }
   }
