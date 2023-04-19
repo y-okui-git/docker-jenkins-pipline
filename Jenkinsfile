@@ -16,11 +16,11 @@ pipeline {
     stage('Build') {
       steps {
         sh "cat docker-compose.build.yml"
-        sh "docker compose --host list ssh://${BUILD_HOST} -f docker-compose.build.yml down"
-        sh "docker --host list ssh://${BUILD_HOST} volume prune -f"
-        sh "docker compose --host list ssh://${BUILD_HOST} -f docker-compose.build.yml build"
-        sh "docker compose --host list ssh://${BUILD_HOST} -f docker-compose.build.yml up -d"
-        sh "docker compose --host list ssh://${BUILD_HOST} -f docker-compose.build.yml ps"
+        sh "dockerd compose -H ssh://${BUILD_HOST} -f docker-compose.build.yml down"
+        sh "dockerd -H ssh://${BUILD_HOST} volume prune -f"
+        sh "dockerd compose -H list ssh://${BUILD_HOST} -f docker-compose.build.yml build"
+        sh "dockerd compose -H list ssh://${BUILD_HOST} -f docker-compose.build.yml up -d"
+        sh "dockerd compose -H ssh://${BUILD_HOST} -f docker-compose.build.yml ps"
       }
     }
     stage('Test') {
